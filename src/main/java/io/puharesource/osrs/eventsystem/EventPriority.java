@@ -4,8 +4,8 @@ package io.puharesource.osrs.eventsystem;
  * The event priories are used to tell the event system
  * in which order the event executors are going to be executed.
  *
- * The order in which the EventHandlers are being executed is as followed:
- * LOWEST -> LOW -> NORMAL -> HIGH -> HIGHEST -> MONITOR.
+ * The order in which the EventHandlers are being executed is as followed (left to right):
+ * LOWEST - LOW - NORMAL - HIGH - HIGHEST - MONITOR.
  */
 public enum EventPriority {
     /**

@@ -3,6 +3,7 @@ package io.puharesource.osrs.eventsystem.test;
 import io.puharesource.osrs.eventsystem.EventManager;
 import io.puharesource.osrs.eventsystem.test.events.Event1;
 import io.puharesource.osrs.eventsystem.test.events.Event2;
+import io.puharesource.osrs.eventsystem.test.events.TestEvent;
 import io.puharesource.osrs.eventsystem.test.listeners.TestListener;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
@@ -13,6 +14,7 @@ public final class TestScript extends Script {
     public void onStart() throws InterruptedException {
         EventManager.get().registerEvent(Event1.class);
         EventManager.get().registerEvent(Event2.class);
+        EventManager.get().registerEvent(TestEvent.class);
 
         EventManager.get().registerListener(new TestListener());
     }
@@ -25,6 +27,16 @@ public final class TestScript extends Script {
 
         if (random(0, 10) == 5) {
             EventManager.get().callEvent(new Event2("One", "Two"));
+        }
+
+        if (random(0, 10) == 5) {
+            final TestEvent event = new TestEvent();
+
+            EventManager.get().callEvent(event);
+
+            if (event.isCancelled()) {
+                log("TestEvent cancelled!");
+            }
         }
 
         return random(200, 300);

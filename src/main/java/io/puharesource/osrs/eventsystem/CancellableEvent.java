@@ -7,5 +7,5 @@ package io.puharesource.osrs.eventsystem;
  */
 public interface CancellableEvent {
     boolean isCancelled();
-    void setCancelled();
+    void setCancelled(boolean cancel);
 }
