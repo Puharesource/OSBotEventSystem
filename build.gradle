@@ -1,0 +1,52 @@
+apply plugin: 'java'
+
+group 'io.puharesource.osrs.eventsystem'
+version '1.0.0'
+
+compileJava.options.encoding = 'UTF-8'
+
+targetCompatibility = 1.8
+sourceCompatibility = 1.8
+
+task compileToOut(dependsOn: 'build', type: Copy) {
+    from 'build/libs/'
+    into "out/"
+}
+
+configurations {
+    provided
+    compile.extendsFrom provided
+}
+
+repositories {
+    mavenCentral()
+
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    provided name: 'OSBot'
+}
+
+artifacts {
+    archives jar
+}
+
+jar {
+    dependsOn configurations.runtime
+    from {
+        (configurations.runtime - configurations.provided).collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    } {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
+}
+
+if (!JavaVersion.current().isJava8Compatible()) {
+    logger.lifecycle("WARNING! You're trying to compile using an unsupported Java version! Please use JDK 1.8 or above!")
+}
